@@ -1,7 +1,6 @@
 package ru.isin.basic.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -15,12 +14,16 @@ public class Tester {
 	private final Task task;
 	private final String path;
 
-	public Tester(Task task, String path) {
+	private Tester(Task task, String path) {
 		this.task = task;
 		this.path = Constants.rootPath + path;
 	}
 
-	public void runTest(int number) {
+	public static Tester of(Task task, String path) {
+		return new Tester(task, path);
+	}
+
+	public void runTest(int number) throws Exception {
 		var inFile = Paths.get(path + "\\test." + number + ".in");
 		var outFile = Paths.get(path + "\\test." + number + ".out");
 
@@ -30,14 +33,14 @@ public class Tester {
 
 		boolean result = checkTest(inFile, outFile);
 		if (result) {
-			log.info("Test #" + number + " - " + result);
+			log.info("Test #" + number + " - TRUE");
 		} else {
-			log.error("Test #" + number + " - " + result);
-			Assertions.fail();
+			log.info("Test #" + number + " - FALSE");
+			throw new Exception("Тест №" + number + " не прошел");
 		}
 	}
 
-	public void runAllTest() {
+	public void runAllTest() throws Exception {
 		var number = 0;
 		while (true) {
 			runTest(number++);

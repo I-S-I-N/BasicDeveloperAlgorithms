@@ -14,4 +14,9 @@ public class StringAlgorithm implements Task {
 		}
 		return String.valueOf(size);
 	}
+
+	@Override
+	public String getPath() {
+		return "combinatorics/lucky-tickets/0.String";
+	}
 }
